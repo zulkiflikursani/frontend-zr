@@ -64,6 +64,7 @@ const LaporanPenjualan = () => {
       <table className="w-full rounded-sm md:mx-1">
         <thead className="bg-red-300 border text-sm font-normal ">
           <tr>
+            <th>No</th>
             <th>Tanggal</th>
             <th>kode transaksi</th>
             <th>Kode Barang</th>
