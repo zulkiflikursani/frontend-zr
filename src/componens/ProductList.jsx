@@ -30,18 +30,11 @@ const ProductList = () => {
     );
   }, [filterText, resetPaginationToggle]);
 
-  const config = {
-    headers: {
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
     let API = "https://backend-zr.vercel.app/";
 
-    const response = await axios.get(API + "products", config);
+    const response = await axios.get(API + "products");
     console.log(data);
     return response.data;
   };
