@@ -33,6 +33,7 @@ const ProductList = () => {
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
     const response = await axios.get("http://localhost:5000/products");
+    console.log(data);
     return response.data;
   };
 
@@ -40,8 +41,19 @@ const ProductList = () => {
   if (!data) return <h2>Loading....</h2>;
 
   const deleteProdut = async (productId) => {
-    await axios.delete("http://localhost:5000/products/" + productId);
-    mutate("products");
+    if (window.confirm("Yakin Akan Menghapus Data ?")) {
+      await axios
+        .delete("http://localhost:5000/products/" + productId)
+        .then(function (response) {
+          if (response.status !== 200) {
+            alert("Gagal Menghapus Data");
+          } else {
+            if (window.confirm("Berhasil menghapus data")) {
+              mutate("products");
+            }
+          }
+        });
+    }
   };
 
   const columns = [
@@ -52,6 +64,10 @@ const ProductList = () => {
     {
       name: "Nama",
       selector: (row) => row.nama,
+    },
+    {
+      name: "Kat",
+      selector: (row) => row.kat,
     },
     {
       name: "Harga Beli",

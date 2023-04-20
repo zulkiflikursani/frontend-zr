@@ -6,26 +6,39 @@ const EditProduct = () => {
   const [nama, setNama] = useState("");
   const [hBeli, setHbeli] = useState("");
   const [hJual, setHjual] = useState("");
+  const [kat, setKat] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     const getProductByid = async () => {
       const response = await axios.get("http://localhost:5000/products/" + id);
-      setNama(response.data.nama);
-      setHbeli(response.data.hbeli);
-      setHjual(response.data.hjual);
+      // console.log(response);
+      // console.log(response.data[0].nama);
+      setNama(response.data[0].nama);
+      setKat(response.data[0].kat);
+      setHbeli(response.data[0].hbeli);
+      setHjual(response.data[0].hjual);
     };
     getProductByid();
   }, [id]);
   const editProduct = async (e) => {
     e.preventDefault();
-    await axios.patch("http://localhost:5000/products/" + id, {
-      nama: nama,
-      hbeli: parseInt(hBeli),
-      hjual: parseInt(hJual),
-    });
-    navigate("/");
+    await axios
+      .patch("http://localhost:5000/products/" + id, {
+        nama: nama,
+        kat: kat,
+        hbeli: parseInt(hBeli),
+        hjual: parseInt(hJual),
+      })
+      .then(function (response) {
+        console.log(response.status);
+        if (response.status !== 200) {
+          alert("gagal mengedit data");
+        } else {
+          navigate("/");
+        }
+      });
   };
   return (
     <div
@@ -45,6 +58,21 @@ const EditProduct = () => {
               value={nama}
               onChange={(e) => setNama(e.target.value)}
             />
+          </div>
+          <div className="mb-5">
+            <label className="font-bold text-slate-700" htmlFor="">
+              Kategori
+            </label>
+            <select
+              className="w-full py-3 border border-slate-200 rounded-lg px-3 foucus:outline-none focus:boder-slate-500 hover:shadow"
+              placeholder="Kategori "
+              value={kat}
+              onChange={(e) => setKat(e.target.value)}
+            >
+              <option value=""></option>
+              <option value="1">Voucer Data</option>
+              <option value="2">Aksesoris</option>
+            </select>
           </div>
           <div className="mb-5">
             <label className="font-bold text-slate-700" htmlFor="">
@@ -72,7 +100,7 @@ const EditProduct = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-3 font-bold text-white bg-indigo-600  rounded-lg hover:bg-indigo-500 hover:shadow "
+            className="w-full py-3 font-bold text-white bg-red-600  rounded-lg hover:bg-red-500 hover:shadow "
           >
             Update
           </button>

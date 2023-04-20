@@ -4,7 +4,7 @@ import Select from "react-select";
 import useSWR from "swr";
 // import DataTable from "react-data-table-component";
 
-const Penjualan = () => {
+const Pembelian = () => {
   // const { mutate } = useSWRConfig();
   const [jumlah, setJumlah] = useState(0);
   const [hargajual, setHargajual] = useState(0);
@@ -13,10 +13,11 @@ const Penjualan = () => {
   const [totHarga, setTotHarga] = useState("");
   const [totTagihan, setTotTagihan] = useState(0);
   const [kembalian, setKembalian] = useState(0);
+  const [getAlert, setAlert] = useState("");
 
   const [dataPenjualan, setDataPenjualan] = useState([]);
   const [list, updateList] = useState(dataPenjualan);
-  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     let tempJumlah = 0;
     list.map((item) => {
@@ -36,13 +37,10 @@ const Penjualan = () => {
   };
 
   const hendleChange = (e) => {
-    let tot = 1 * parseFloat(e.hjual);
     setSelectedOption(e.hjual);
     setHargajual(parseFloat(e.hjual));
     setIdbarang(e.value);
     setNmBarang(e.label);
-    setJumlah(1);
-    setTotHarga(tot);
   };
   const [selectedOption, setSelectedOption] = useState("");
   const { data } = useSWR("products", fetcher);
@@ -68,9 +66,6 @@ const Penjualan = () => {
   //   useEffect = () => {
   //     setDataKeranjang(dataKeranjang);
   //   };
-
-  // when data is available, title is shown
-
   const AddToKeranjang = async () => {
     const tempData = {};
     tempData.id = idbarang;
@@ -88,39 +83,62 @@ const Penjualan = () => {
     return tempData;
   };
   const hitKembalian = (e) => {
-    let kembalian = parseFloat(e.target.value) - parseFloat(totTagihan);
+    let kembalian = parseFloat(totTagihan) - parseFloat(e.target.value);
     setKembalian(kembalian);
   };
 
-  if (loading) return <span>Loading</span>;
-
-  // data will be null when fetch call fails
-  if (!data) return <span>Data not available</span>;
-  const SimpanPenjualan = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    await axios
-      .post("http://localhost:5000/penjualan", {
-        data: list,
-      })
-      .then((response) => {
-        if (response.status === 201) {
-          alert("Data Berhasil Disimpan");
-          updateList([]);
-          setLoading(false);
-        } else {
-          alert("Data Gagal Disimpan");
-          setLoading(false);
-        }
-      });
+  const makeid = (length) => {
+    let result = "";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
   };
 
-  // alert(result);
-
+  const SimpanPenjualan = async (e) => {
+    e.preventDefault();
+    let kode_penjualan = makeid(5);
+    list.map(async (item) => {
+      await axios
+        .post("http://localhost:5000/penjualan", {
+          kode_penjualan: kode_penjualan,
+          kode_barang: item.id + "",
+          nama: item.nama,
+          hjual: parseInt(item.hjual),
+          qty: parseInt(item.qty),
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            setAlert("Data Berhasil Disimpan");
+          } else {
+            setAlert("Data gagal disimpan");
+          }
+          // return dataalert;
+        });
+    });
+    if (getAlert === "") {
+      alert("Data Gagal Disimpan");
+    } else if (getAlert === "Data Berhasil Disimpan") {
+      alert(getAlert);
+      setIdbarang("");
+      setNmBarang("");
+      setJumlah("");
+      setTotHarga("");
+      setSelectedOption("");
+      updateList([]);
+    } else {
+      alert(getAlert);
+    }
+  };
   return (
     <div className="container p-2">
       <form className="w-full">
-        <div className="flex flex-wrap mx-3 mb-6">
+        <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -128,11 +146,7 @@ const Penjualan = () => {
             >
               Nama Barang
             </label>
-            <Select
-              options={options}
-              onChange={(e) => hendleChange(e)}
-              // value={idbarang}
-            />
+            <Select options={options} onChange={(e) => hendleChange(e)} />
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label
@@ -177,9 +191,7 @@ const Penjualan = () => {
               id="grid-last-name"
               type="number"
               required
-              value={new Intl.NumberFormat("de-DE").format(
-                parseFloat(totHarga)
-              )}
+              value={totHarga}
               placeholder="Jumlah"
             />
           </div>
@@ -264,7 +276,7 @@ const Penjualan = () => {
               className="block uppercase text-right tracking-wide text-gray-700 text-xs font-bold"
               htmlFor="grid-last-name"
             >
-              {new Intl.NumberFormat("de-DE").format(parseFloat(totTagihan))}
+              {totTagihan}
             </label>
           </div>
           <div className="w-full md:w-9/12 px-3 my-2 text-right">
@@ -298,7 +310,7 @@ const Penjualan = () => {
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold "
               htmlFor="grid-last-name"
             >
-              {new Intl.NumberFormat("de-DE").format(parseFloat(kembalian))}
+              {kembalian}
             </label>
           </div>
           <div className="w-full md:w-1/2 px-3 "></div>
@@ -317,4 +329,4 @@ const Penjualan = () => {
   );
 };
 
-export default Penjualan;
+export default Pembelian;

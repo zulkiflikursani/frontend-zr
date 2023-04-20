@@ -6,8 +6,8 @@ const NavigationBar = () => {
   const menu = [
     { id: 1, title: "Data Barang", link: "/data-barang" },
     { id: 2, title: "Penjulan", link: "/penjualan" },
-    { id: 3, title: "Pembelian", link: "/pembalian" },
-    { id: 4, title: "Laporan", link: "/laporam" },
+    { id: 3, title: "Pembelian", link: "/pembelian" },
+    { id: 4, title: "Laporan", link: "/laporan" },
     // {title:"Data Barang",link:"/data-barang"}
   ];
   return (
