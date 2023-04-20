@@ -8,11 +8,12 @@ const AddProduct = () => {
   const [hJual, setHjual] = useState("");
   const [kat, setKat] = useState("");
   const navigate = useNavigate();
+  let API = "https://backend-zr.vercel.app/";
 
   const saveProduct = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/products", {
+    await axios.post(API + "products", {
       nama: nama,
       kat: kat,
       hbeli: parseInt(hBeli),

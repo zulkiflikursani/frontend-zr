@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Penjualan from "./Penjualan";
 
 const LaporanPenjualan = () => {
   const [mulai, setMulai] = useState("");
   const [sampai, setSampai] = useState("");
   const [dataPenjualan, setDataPenjualan] = useState([]);
   //   const [data, getData] = useState([]);
+  let API = "https://backend-zr.vercel.app/";
 
   const Tampilkan = async () => {
     const params = {
       mulai: mulai,
       sampai: sampai,
     };
-    const response = await axios.get("http://localhost:5000/laporanpenjualan", {
+    const response = await axios.get(API + "laporanpenjualan", {
       params,
     });
     // console.log(response.data);

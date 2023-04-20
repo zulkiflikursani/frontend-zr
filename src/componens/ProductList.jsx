@@ -30,20 +30,29 @@ const ProductList = () => {
     );
   }, [filterText, resetPaginationToggle]);
 
+  const config = {
+    headers: {
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+    },
+  };
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:5000/products");
+    let API = "https://backend-zr.vercel.app/";
+
+    const response = await axios.get(API + "products", config);
     console.log(data);
     return response.data;
   };
 
   const { data } = useSWR("products", fetcher);
-  if (!data) return <h2>Loading....</h2>;
+  if (!data) return <h2>Loading.... </h2>;
 
   const deleteProdut = async (productId) => {
     if (window.confirm("Yakin Akan Menghapus Data ?")) {
       await axios
-        .delete("http://localhost:5000/products/" + productId)
+        .delete(process.env.API + "products/" + productId)
         .then(function (response) {
           if (response.status !== 200) {
             alert("Gagal Menghapus Data");

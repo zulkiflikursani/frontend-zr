@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import useSWR from "swr";
 // import DataTable from "react-data-table-component";
+let API = "https://backend-zr.vercel.app/";
 
 const Penjualan = () => {
   // const { mutate } = useSWRConfig();
@@ -31,7 +32,7 @@ const Penjualan = () => {
     updateList(list.filter((item) => item.id !== e));
   };
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:5000/products");
+    const response = await axios.get(API + "products");
     return response.data;
   };
 
@@ -100,7 +101,7 @@ const Penjualan = () => {
     e.preventDefault();
     setLoading(true);
     await axios
-      .post("http://localhost:5000/penjualan", {
+      .post(API + "penjualan", {
         data: list,
       })
       .then((response) => {

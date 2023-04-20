@@ -17,6 +17,7 @@ const Pembelian = () => {
 
   const [dataPenjualan, setDataPenjualan] = useState([]);
   const [list, updateList] = useState(dataPenjualan);
+  let API = "https://backend-zr.vercel.app/";
 
   useEffect(() => {
     let tempJumlah = 0;
@@ -32,7 +33,7 @@ const Pembelian = () => {
     updateList(list.filter((item) => item.id !== e));
   };
   const fetcher = async () => {
-    const response = await axios.get("http://localhost:5000/products");
+    const response = await axios.get(API + "products");
     return response.data;
   };
 
@@ -105,7 +106,7 @@ const Pembelian = () => {
     let kode_penjualan = makeid(5);
     list.map(async (item) => {
       await axios
-        .post("http://localhost:5000/penjualan", {
+        .post(API + "penjualan", {
           kode_penjualan: kode_penjualan,
           kode_barang: item.id + "",
           nama: item.nama,
