@@ -13,7 +13,7 @@ const AddProduct = () => {
   const saveProduct = async (e) => {
     e.preventDefault();
 
-    await axios.post(API + "products", {
+    await axios.post(API + "products-post", {
       nama: nama,
       kat: kat,
       hbeli: parseInt(hBeli),
