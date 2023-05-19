@@ -8,22 +8,32 @@ const AddProduct = () => {
   const [hJual, setHjual] = useState("");
   const [kat, setKat] = useState("");
   const navigate = useNavigate();
+  // let API = "https://backend-zr.vercel.app/";
   let API = "https://backend-zr.vercel.app/";
+  // let API = "http://localhost:5000/";
 
   const saveProduct = async (e) => {
     e.preventDefault();
-
-    await axios.post(API + "products-post", {
-      nama: nama,
-      kat: kat,
-      hbeli: parseInt(hBeli),
-      hjual: parseInt(hJual),
-    });
-    navigate("/data-barang");
+    await axios
+      .post(API + "products-post", {
+        nama: nama,
+        kat: kat,
+        hbeli: parseInt(hBeli),
+        hjual: parseInt(hJual),
+      })
+      .then(function (response) {
+        console.log(response);
+        navigate("/data-barang");
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert(error);
+      });
+    // console.log(responsedata.data);
   };
-  const handleClick = (event) => {
-    event.currentTarget.disabled = true;
-  };
+  // const handleClick = (event) => {
+  //   event.currentTarget.disabled = true;
+  // };
   return (
     <div
       className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow
@@ -87,7 +97,6 @@ const AddProduct = () => {
           </div>
           <button
             type="submit"
-            onClick={handleClick}
             className="w-full py-3 font-bold text-white bg-red-600  rounded-lg hover:bg-red-500 hover:shadow "
           >
             Save

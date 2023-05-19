@@ -33,9 +33,11 @@ const ProductList = () => {
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
     let API = "https://backend-zr.vercel.app/";
+    // let API = "http://localhost:5000/";
 
     const response = await axios.get(API + "products");
     console.log(data);
+
     return response.data;
   };
 
