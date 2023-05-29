@@ -26,7 +26,7 @@ const EditProduct = () => {
   const editProduct = async (e) => {
     e.preventDefault();
     await axios
-      .patch("http://localhost:5000/products/" + id, {
+      .patch(API + "products/" + id, {
         nama: nama,
         kat: kat,
         hbeli: parseInt(hBeli),
