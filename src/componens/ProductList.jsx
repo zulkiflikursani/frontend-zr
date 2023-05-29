@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr";
 import FilterComponen from "./FilterComponen";
+let API = "https://backend-zr.vercel.app/";
 
 const ProductList = () => {
   const [filterText, setFilterText] = React.useState("");
@@ -32,7 +33,7 @@ const ProductList = () => {
 
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
-    let API = "https://backend-zr.vercel.app/";
+    // let API = "https://backend-zr.vercel.app/";
     // let API = "http://localhost:5000/";
 
     const response = await axios.get(API + "products");
@@ -47,7 +48,7 @@ const ProductList = () => {
   const deleteProdut = async (productId) => {
     if (window.confirm("Yakin Akan Menghapus Data ?")) {
       await axios
-        .delete(process.env.API + "products/" + productId)
+        .delete(API + "products/" + productId)
         .then(function (response) {
           if (response.status !== 200) {
             alert("Gagal Menghapus Data");
