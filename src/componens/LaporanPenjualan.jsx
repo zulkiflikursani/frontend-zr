@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 const convert = (dateString) => new Date(dateString).toISOString();
+
+// const totaljual = 0;
+// const totalbeli = 0;
 const format = (inputDate) => {
   let date, month, year;
   inputDate = new Date(inputDate);
@@ -22,6 +25,10 @@ const LaporanPenjualan = () => {
   const [mulai, setMulai] = useState("");
   const [sampai, setSampai] = useState("");
   const [dataPenjualan, setDataPenjualan] = useState([]);
+  const [totaljual, setTotaljual] = useState(0);
+  const [totalbeli, setTotalbeli] = useState(0);
+  let temptotaljual = 0;
+  let temptotalbeli = 0;
   //   const [data, getData] = useState([]);
   let API = "https://backend-zr.vercel.app/";
 
@@ -93,6 +100,10 @@ const LaporanPenjualan = () => {
         <tbody>
           {dataPenjualan.length ? (
             dataPenjualan.map((item, index) => {
+              temptotaljual = temptotaljual + item.hjual;
+              temptotalbeli = temptotalbeli + item.hbeli;
+              // setTotaljual(temptotaljual);
+              // setTotalbeli(temptotalbeli);
               return (
                 <tr className="border">
                   <td className="border border-gray-200">{index + 1}</td>
@@ -102,8 +113,12 @@ const LaporanPenjualan = () => {
                   <td className="text-left">{item.kode_penjualan}</td>
                   <td className="border">{item.kode_barang}</td>
                   <td className="border">{item.nama_barang}</td>
-                  <td className="border">{item.hbeli}</td>
-                  <td className="border">{item.hjual}</td>
+                  <td className="border text-right">
+                    {new Intl.NumberFormat("de-DE").format(item.hbeli)}
+                  </td>
+                  <td className="border text-right">
+                    {new Intl.NumberFormat("de-DE").format(item.hjual)}
+                  </td>
                 </tr>
               );
             })
@@ -114,6 +129,29 @@ const LaporanPenjualan = () => {
               </td>
             </tr>
           )}
+
+          <tr>
+            <td className="border text-center font-bold bg-red-200" colspan="5">
+              TOTAL
+            </td>
+            <td className="border font-bold bg-red-200 text-right">
+              {new Intl.NumberFormat("de-DE").format(temptotalbeli)}
+            </td>
+            <td className="border font-bold bg-red-200 text-right">
+              {new Intl.NumberFormat("de-DE").format(temptotaljual)}
+            </td>
+          </tr>
+          <tr>
+            <td className="border text-center font-bold bg-red-200" colspan="5">
+              MARGIN
+            </td>
+            <td className="border font-bold bg-red-200"></td>
+            <td className="border font-bold bg-red-200 text-right">
+              {new Intl.NumberFormat("de-DE").format(
+                temptotaljual - temptotalbeli
+              )}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
