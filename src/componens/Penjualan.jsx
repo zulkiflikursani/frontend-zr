@@ -105,7 +105,7 @@ const Penjualan = () => {
         data: list,
       })
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           alert("Data Berhasil Disimpan");
           updateList([]);
           setLoading(false);
