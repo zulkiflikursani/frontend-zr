@@ -75,10 +75,11 @@ const LaporanPenjualan = () => {
         </thead>
         <tbody>
           {dataPenjualan.length ? (
-            dataPenjualan.map((item) => {
+            dataPenjualan.map((item, index) => {
               return (
                 <tr className="border">
-                  <td className="border border-gray-200">{item.tanggal}</td>
+                  <td className="border border-gray-200">{index++}</td>
+                  <td className="border border-gray-200">{item.createAt}</td>
                   <td className="text-left">{item.kode_penjualan}</td>
                   <td className="border">{item.kode_barang}</td>
                   <td className="border">{item.nama_barang}</td>
