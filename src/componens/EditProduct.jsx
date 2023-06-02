@@ -9,9 +9,11 @@ const EditProduct = () => {
   const [kat, setKat] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  let API = "https://backend-zr.vercel.app/";
 
+  let API = "https://backend-zr.vercel.app/";
   useEffect(() => {
+    let API = "https://backend-zr.vercel.app/";
+
     const getProductByid = async () => {
       const response = await axios.get(API + "products/" + id);
       // console.log(response);

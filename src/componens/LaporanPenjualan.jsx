@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 import axios from "axios";
+const convert = (dateString) => new Date(dateString).toISOString();
+const format = (inputDate) => {
+  let date, month, year;
+  inputDate = new Date(inputDate);
+  date = inputDate.getDate();
+  month = inputDate.getMonth() + 1;
+  year = inputDate.getFullYear();
 
+  var h = inputDate.getHours();
+  var m = inputDate.getMinutes();
+  var s = inputDate.getSeconds();
+
+  date = date.toString().padStart(2, "0");
+
+  month = month.toString().padStart(2, "0");
+
+  return `${date}/${month}/${year} ${h}:${m}:${s}`;
+};
 const LaporanPenjualan = () => {
   const [mulai, setMulai] = useState("");
   const [sampai, setSampai] = useState("");
@@ -16,7 +33,7 @@ const LaporanPenjualan = () => {
     const response = await axios.get(API + "laporanpenjualan", {
       params,
     });
-    // console.log(response.data);
+    console.log(response.data);
     setDataPenjualan(response.data);
     // return response.data;
   };
@@ -78,8 +95,10 @@ const LaporanPenjualan = () => {
             dataPenjualan.map((item, index) => {
               return (
                 <tr className="border">
-                  <td className="border border-gray-200">{index++}</td>
-                  <td className="border border-gray-200">{item.createAt}</td>
+                  <td className="border border-gray-200">{index + 1}</td>
+                  <td className="border border-gray-200">
+                    {format(convert(item.tanggal))}
+                  </td>
                   <td className="text-left">{item.kode_penjualan}</td>
                   <td className="border">{item.kode_barang}</td>
                   <td className="border">{item.nama_barang}</td>
