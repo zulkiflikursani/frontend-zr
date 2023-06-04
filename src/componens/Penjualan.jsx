@@ -66,6 +66,15 @@ const Penjualan = () => {
     setJumlah(e.target.value);
   };
 
+  const onChangeHargajual = (e) => {
+    if (e.target.value !== null || e.target.value !== 0) {
+      setTotHarga(parseFloat(e.target.value) * parseFloat(hargajual));
+    } else {
+      setTotHarga(0);
+    }
+    setJumlah(e.target.value);
+  };
+
   //   useEffect = () => {
   //     setDataKeranjang(dataKeranjang);
   //   };
@@ -144,8 +153,10 @@ const Penjualan = () => {
             </label>
             <input
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="number"
               id="grid-last-name"
               value={hargajual}
+              onChange={(e) => onChangeHargajual(e)}
             />
           </div>
           <div className="w-full md:w-1/2 px-3 my-2">
