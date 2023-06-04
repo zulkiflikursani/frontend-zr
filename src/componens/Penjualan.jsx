@@ -68,7 +68,7 @@ const Penjualan = () => {
 
   const onChangeHargajual = (e) => {
     if (e.target.value !== null || e.target.value !== 0) {
-      setTotHarga(parseFloat(e.target.value) * parseFloat(hargajual));
+      setTotHarga(parseFloat(e.target.value) * parseFloat(jumlah));
     } else {
       setTotHarga(0);
     }
