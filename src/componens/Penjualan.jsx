@@ -72,7 +72,7 @@ const Penjualan = () => {
     } else {
       setTotHarga(0);
     }
-    setJumlah(e.target.value);
+    setHargajual(e.target.value);
   };
 
   //   useEffect = () => {
