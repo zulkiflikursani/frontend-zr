@@ -14,7 +14,7 @@ function App() {
       <NavigationBar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ProductList />} />
+          <Route path="/" element={<Penjualan />} />
           <Route path="/data-barang" element={<ProductList />} />
           <Route path="/penjualan" element={<Penjualan />} />
           <Route path="/pembelian" element={<Pembelian />} />

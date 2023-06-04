@@ -146,7 +146,6 @@ const Penjualan = () => {
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-last-name"
               value={selectedOption}
-              readOnly
             />
           </div>
           <div className="w-full md:w-1/2 px-3 my-2">
