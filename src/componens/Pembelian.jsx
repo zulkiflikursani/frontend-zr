@@ -7,16 +7,17 @@ import useSWR from "swr";
 const Pembelian = () => {
   // const { mutate } = useSWRConfig();
   const [jumlah, setJumlah] = useState(0);
-  const [hargajual, setHargajual] = useState(0);
+  const [hargabeli, setHargabeli] = useState(0);
   const [idbarang, setIdbarang] = useState("");
   const [nmBarang, setNmBarang] = useState("");
   const [totHarga, setTotHarga] = useState("");
   const [totTagihan, setTotTagihan] = useState(0);
   const [kembalian, setKembalian] = useState(0);
-  const [getAlert, setAlert] = useState("");
 
   const [dataPenjualan, setDataPenjualan] = useState([]);
   const [list, updateList] = useState(dataPenjualan);
+  const [loading, setLoading] = useState(false);
+
   let API = "https://backend-zr.vercel.app/";
 
   useEffect(() => {
@@ -38,8 +39,8 @@ const Pembelian = () => {
   };
 
   const hendleChange = (e) => {
-    setSelectedOption(e.hjual);
-    setHargajual(parseFloat(e.hjual));
+    setSelectedOption(e.hbeli);
+    setHargabeli(parseFloat(e.hbeli));
     setIdbarang(e.value);
     setNmBarang(e.label);
   };
@@ -51,13 +52,13 @@ const Pembelian = () => {
     const container = {};
     container.value = item.id;
     container.label = item.nama;
-    container.hjual = item.hjual;
+    container.hbeli = item.hbeli;
     return container;
   });
 
   const onChangeJumlahBarang = (e) => {
     if (e.target.value !== null || e.target.value !== 0) {
-      setTotHarga(parseFloat(e.target.value) * parseFloat(hargajual));
+      setTotHarga(parseFloat(e.target.value) * parseFloat(hargabeli));
     } else {
       setTotHarga(0);
     }
@@ -72,7 +73,7 @@ const Pembelian = () => {
     tempData.id = idbarang;
     tempData.nama = nmBarang;
     tempData.qty = parseFloat(jumlah);
-    tempData.hjual = hargajual;
+    tempData.hbeli = hargabeli;
     tempData.total = totHarga;
     setDataPenjualan((oldArray) => [...oldArray, tempData]);
     updateList((oldList) => [...oldList, tempData]);
@@ -87,54 +88,27 @@ const Pembelian = () => {
     let kembalian = parseFloat(totTagihan) - parseFloat(e.target.value);
     setKembalian(kembalian);
   };
-
-  const makeid = (length) => {
-    let result = "";
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
-  };
+  if (loading) return <span>Loading</span>;
 
   const SimpanPenjualan = async (e) => {
     e.preventDefault();
-    let kode_penjualan = makeid(5);
+    setLoading(true);
     list.map(async (item) => {
       await axios
-        .post(API + "penjualan", {
-          kode_penjualan: kode_penjualan,
-          kode_barang: item.id + "",
-          nama: item.nama,
-          hjual: parseInt(item.hjual),
-          qty: parseInt(item.qty),
+        .post(API + "pembelian", {
+          data: list,
         })
         .then((response) => {
-          if (response.status === 201) {
-            setAlert("Data Berhasil Disimpan");
+          if (response.status === 200) {
+            alert("Data Berhasil Disimpan");
+            updateList([]);
+            setLoading(false);
           } else {
-            setAlert("Data gagal disimpan");
+            alert("Data Gagal Disimpan");
+            setLoading(false);
           }
-          // return dataalert;
         });
     });
-    if (getAlert === "") {
-      alert("Data Gagal Disimpan");
-    } else if (getAlert === "Data Berhasil Disimpan") {
-      alert(getAlert);
-      setIdbarang("");
-      setNmBarang("");
-      setJumlah("");
-      setTotHarga("");
-      setSelectedOption("");
-      updateList([]);
-    } else {
-      alert(getAlert);
-    }
   };
   return (
     <div className="container p-2">
@@ -154,13 +128,12 @@ const Pembelian = () => {
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               htmlFor="grid-last-name"
             >
-              Harga Jual
+              Harga Beli
             </label>
             <input
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-last-name"
               value={selectedOption}
-              readOnly
+              id="grid-last-name"
             />
           </div>
           <div className="w-full md:w-1/2 px-3 my-2">
