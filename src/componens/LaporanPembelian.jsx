@@ -25,7 +25,7 @@ const LaporanPembelian = () => {
   const [mulai, setMulai] = useState("");
   const [sampai, setSampai] = useState("");
   const [dataPembelian, setDataPembelian] = useState([]);
-  const [totalbeli, setTotalbeli] = useState(0);
+  // const [totalbeli, setTotalbeli] = useState(0);
 
   let temptotalbeli = 0;
   let API = "https://backend-zr.vercel.app/";
@@ -101,18 +101,18 @@ const LaporanPembelian = () => {
               temptotalbeli = temptotalbeli + item.hbeli;
               return (
                 <tr className="border">
-                  <td className="border border-gray-200">{index + 1}</td>
-                  <td className="border border-gray-200">
+                  <td className="border border-gray-200 w-1">{index + 1}</td>
+                  <td className="border border-gray-200 w-2 text-center">
                     {format(convert(item.tanggal))}
                   </td>
-                  <td className="text-left">{item.kode_penjualan}</td>
-                  <td className="border">{item.kode_barang}</td>
+                  <td className="text-left w-2">{item.kode_pembelian}</td>
+                  <td className="border w-2">{item.kode_barang}</td>
                   <td className="border">{item.nama_barang}</td>
-                  <td className="border text-right">
-                    {new Intl.NumberFormat("de-DE").format(item.hbeli)}
+                  <td className="border text-right w-2">
+                    {new Intl.NumberFormat("de-DE").format(item.qty)}
                   </td>
-                  <td className="border text-right">
-                    {new Intl.NumberFormat("de-DE").format(item.hjual)}
+                  <td className="border text-right w-3">
+                    {new Intl.NumberFormat("de-DE").format(item.hbeli)}
                   </td>
                 </tr>
               );
