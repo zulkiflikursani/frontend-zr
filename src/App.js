@@ -7,6 +7,7 @@ import Pembelian from "./componens/Pembelian";
 import ProductList from "./componens/ProductList";
 import Laporan from "./componens/Laporan";
 import LaporanPenjualan from "./componens/LaporanPenjualan";
+import LaporanPembelian from "./componens/LaporanPembelian";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/edit/:id" element={<EditProduct />} />
           <Route path="/Laporan" element={<Laporan />} />
           <Route path="/LaporanPenjualan" element={<LaporanPenjualan />} />
+          <Route path="/LaporanPembelian" element={<LaporanPembelian />} />
         </Routes>
       </BrowserRouter>
     </div>

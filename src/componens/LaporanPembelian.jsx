@@ -21,15 +21,13 @@ const format = (inputDate) => {
 
   return `${date}/${month}/${year} ${h}:${m}:${s}`;
 };
-const LaporanPenjualan = () => {
+const LaporanPembelian = () => {
   const [mulai, setMulai] = useState("");
   const [sampai, setSampai] = useState("");
-  const [dataPenjualan, setDataPenjualan] = useState([]);
-  const [totaljual, setTotaljual] = useState(0);
+  const [dataPembelian, setDataPembelian] = useState([]);
   const [totalbeli, setTotalbeli] = useState(0);
-  let temptotaljual = 0;
+
   let temptotalbeli = 0;
-  //   const [data, getData] = useState([]);
   let API = "https://backend-zr.vercel.app/";
 
   const Tampilkan = async () => {
@@ -37,16 +35,16 @@ const LaporanPenjualan = () => {
       mulai: mulai,
       sampai: sampai,
     };
-    const response = await axios.get(API + "laporanpenjualan", {
+    const response = await axios.get(API + "laporanpembelian", {
       params,
     });
     console.log(response.data);
-    setDataPenjualan(response.data);
+    setDataPembelian(response.data);
     // return response.data;
   };
   return (
     <div className="w-full ">
-      <h1 className="text-center font-bold text-3xl">LAPORAN PENJUALAN</h1>
+      <h1 className="text-center font-bold text-3xl">LAPORAN PEMBELIAN</h1>
       <div className="flex flex-wrap mb-1">
         <div className="w-full md:w-1/4 px-3 mb-1 md:mb-0">
           <label
@@ -93,17 +91,14 @@ const LaporanPenjualan = () => {
             <th>kode transaksi</th>
             <th>Kode Barang</th>
             <th>Nama Barang</th>
+            <th>Qty</th>
             <th>Harga Beli</th>
-            <th>Harga Jual</th>
           </tr>
         </thead>
         <tbody>
-          {dataPenjualan.length ? (
-            dataPenjualan.map((item, index) => {
-              temptotaljual = temptotaljual + item.hjual;
+          {dataPembelian.length ? (
+            dataPembelian.map((item, index) => {
               temptotalbeli = temptotalbeli + item.hbeli;
-              // setTotaljual(temptotaljual);
-              // setTotalbeli(temptotalbeli);
               return (
                 <tr className="border">
                   <td className="border border-gray-200">{index + 1}</td>
@@ -134,11 +129,9 @@ const LaporanPenjualan = () => {
             <td className="border text-center font-bold bg-red-200" colspan="5">
               TOTAL
             </td>
+            <td className="border font-bold bg-red-200 text-right"></td>
             <td className="border font-bold bg-red-200 text-right">
               {new Intl.NumberFormat("de-DE").format(temptotalbeli)}
-            </td>
-            <td className="border font-bold bg-red-200 text-right">
-              {new Intl.NumberFormat("de-DE").format(temptotaljual)}
             </td>
           </tr>
           <tr>
@@ -146,11 +139,7 @@ const LaporanPenjualan = () => {
               MARGIN
             </td>
             <td className="border font-bold bg-red-200"></td>
-            <td className="border font-bold bg-red-200 text-right">
-              {new Intl.NumberFormat("de-DE").format(
-                temptotaljual - temptotalbeli
-              )}
-            </td>
+            <td className="border font-bold bg-red-200 text-right"></td>
           </tr>
         </tbody>
       </table>
@@ -158,4 +147,4 @@ const LaporanPenjualan = () => {
   );
 };
 
-export default LaporanPenjualan;
+export default LaporanPembelian;

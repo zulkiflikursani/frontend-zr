@@ -9,9 +9,11 @@ const Laporan = () => {
           Laporan Penjualan
         </button>
       </a>
-      <button className="w-full bg-red-700 border-gray-500 rounded-lg text-white p-2 font-bold shadow-sm text-lg my-2">
-        Laporan Pembelian
-      </button>
+      <a href="/LaporanPembelian">
+        <button className="w-full bg-red-700 border-gray-500 rounded-lg text-white p-2 font-bold shadow-sm text-lg my-2">
+          Laporan Pembelian
+        </button>
+      </a>
       <button className="w-full bg-red-700 border-gray-500 rounded-lg text-white p-2 font-bold shadow-sm text-lg my-2">
         Laporan Keuangan
       </button>
