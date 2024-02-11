@@ -1,11 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import useSWR from "swr";
-import ProductList from "./ProductList";
+import { useParams } from "react-router-dom";
+
 // import DataTable from "react-data-table-component";
+
 let API = process.env.REACT_APP_API_URL;
-const Penjualan = () => {
+
+const EditPenjualan = () => {
   // const { mutate } = useSWRConfig();
   const [jumlah, setJumlah] = useState(0);
   const [hargajual, setHargajual] = useState(0);
@@ -14,17 +17,38 @@ const Penjualan = () => {
   const [totHarga, setTotHarga] = useState("");
   const [totTagihan, setTotTagihan] = useState(0);
   const [kembalian, setKembalian] = useState(0);
+  const { id } = useParams();
 
+  const dataFetchedRef = useRef(false);
   const [dataPenjualan, setDataPenjualan] = useState([]);
   const [list, updateList] = useState(dataPenjualan);
   const [loading, setLoading] = useState(false);
+
+  const getPenjualanById = async () => {
+    const response = await axios.get(API + "penjualan/" + id);
+    response.data.map((items) => {
+      // console.log(items.nama_barang)
+      const tempData = {};
+      tempData.id = items.id;
+      tempData.nama_barang = items.nama_barang;
+      tempData.qty = parseFloat(items.qty);
+      tempData.hjual = items.hjual;
+      tempData.total = items.qty * items.hjual;
+      updateList((oldList) => [...oldList, tempData]);
+    });
+  };
+  useEffect(() => {
+    if (dataFetchedRef.current) return;
+    dataFetchedRef.current = true;
+    getPenjualanById();
+    console.log("-----------------------");
+  }, []);
   useEffect(() => {
     let tempJumlah = 0;
     list.map((item) => {
       tempJumlah = parseFloat(tempJumlah) + parseFloat(item.total);
       return tempJumlah;
     });
-
     setTotTagihan(tempJumlah);
   }, [list]);
 
@@ -32,6 +56,7 @@ const Penjualan = () => {
     updateList(list.filter((item) => item.id !== e));
   };
   const fetcher = async () => {
+    // getPenjualanById();
     const response = await axios.get(API + "products");
     return response.data;
   };
@@ -84,7 +109,7 @@ const Penjualan = () => {
   const AddToKeranjang = async () => {
     const tempData = {};
     tempData.id = idbarang;
-    tempData.nama = nmBarang;
+    tempData.nama_barang = nmBarang;
     tempData.qty = parseFloat(jumlah);
     tempData.hjual = hargajual;
     tempData.total = totHarga;
@@ -227,7 +252,7 @@ const Penjualan = () => {
                 return (
                   <tr className="border">
                     <td className="border border-gray-200">{item.id}</td>
-                    <td className="text-left">{item.nama}</td>
+                    <td className="text-left">{item.nama_barang}</td>
                     <td className="border">{item.qty}</td>
                     <td className="border">{item.hjual}</td>
                     <td className="border">{item.total}</td>
@@ -328,4 +353,4 @@ const Penjualan = () => {
   );
 };
 
-export default Penjualan;
+export default EditPenjualan;

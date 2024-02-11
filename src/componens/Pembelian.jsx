@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import useSWR from "swr";
-// import DataTable from "react-data-table-component";
 
 const Pembelian = () => {
   // const { mutate } = useSWRConfig();
@@ -18,7 +17,7 @@ const Pembelian = () => {
   const [list, updateList] = useState(dataPenjualan);
   const [loading, setLoading] = useState(false);
 
-  let API = "https://backend-zr.vercel.app/";
+  let API = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     let tempJumlah = 0;
@@ -56,6 +55,12 @@ const Pembelian = () => {
     return container;
   });
 
+  const onChangeHargaBeli = (e) => {
+    setHargabeli(e.target.value);
+    if (e.target.value !== null || e.target.value !== 0) {
+      setTotHarga(parseFloat(e.target.value) * parseFloat(jumlah));
+    }
+  };
   const onChangeJumlahBarang = (e) => {
     if (e.target.value !== null || e.target.value !== 0) {
       setTotHarga(parseFloat(e.target.value) * parseFloat(hargabeli));
@@ -116,36 +121,42 @@ const Pembelian = () => {
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
+              hmtlfor="nm-barang"
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-first-name"
             >
               Nama Barang
             </label>
-            <Select options={options} onChange={(e) => hendleChange(e)} />
+            <Select
+              id="nm-barang"
+              options={options}
+              onChange={(e) => hendleChange(e)}
+              // name="nm-barang"
+            />
           </div>
           <div className="w-full md:w-1/2 px-3">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-last-name"
+              htmlFor="harga-beli"
             >
               Harga Beli
             </label>
             <input
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              value={selectedOption}
-              id="grid-last-name"
+              value={hargabeli}
+              onChange={(e) => onChangeHargaBeli(e)}
+              id="harga-beli"
             />
           </div>
           <div className="w-full md:w-1/2 px-3 my-2">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-last-name"
+              htmlFor="jumlah-barang"
             >
               Jumlah Barang
             </label>
             <input
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-last-name"
+              id="jumlah-barang"
               type="number"
               required
               value={jumlah}
@@ -156,13 +167,13 @@ const Pembelian = () => {
           <div className="w-full md:w-1/2 px-3 my-2">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="grid-last-name"
+              htmlFor="tot-harga"
             >
               Total Harga
             </label>
             <input
               className="appearance-none block w-full bg-white-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              id="grid-last-name"
+              id="tot-harga"
               type="number"
               required
               value={totHarga}

@@ -10,13 +10,13 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  let API = "https://backend-zr.vercel.app/";
+  let API = process.env.REACT_APP_API_URL;
   useEffect(() => {
-    let API = "https://backend-zr.vercel.app/";
+    let API = process.env.REACT_APP_API_URL;
 
     const getProductByid = async () => {
       const response = await axios.get(API + "products/" + id);
-      // console.log(response);
+      // console.log(response.data);
       // console.log(response.data[0].nama);
       setNama(response.data[0].nama);
       setKat(response.data[0].kat);
@@ -36,10 +36,10 @@ const EditProduct = () => {
       })
       .then(function (response) {
         console.log(response.status);
-        if (response.status !== 200) {
+        if (response.status !== 201) {
           alert("gagal mengedit data");
         } else {
-          navigate("/");
+          navigate("/data-barang");
         }
       });
   };

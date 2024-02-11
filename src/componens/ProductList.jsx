@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr";
 import FilterComponen from "./FilterComponen";
-let API = "https://backend-zr.vercel.app/";
+let API = process.env.REACT_APP_API_URL;
 
 const ProductList = () => {
   const [filterText, setFilterText] = React.useState("");
@@ -33,12 +33,7 @@ const ProductList = () => {
 
   const { mutate } = useSWRConfig();
   const fetcher = async () => {
-    // let API = "https://backend-zr.vercel.app/";
-    // let API = "http://localhost:5000/";
-
     const response = await axios.get(API + "products");
-    console.log(data);
-
     return response.data;
   };
 
@@ -119,7 +114,7 @@ const ProductList = () => {
   );
 
   return (
-    <div className="flex flex-col mt-5">
+    <div className="flex flex-col mt-5 container">
       <div className="w-full">
         <Link
           to="/add"

@@ -37,7 +37,7 @@ const AddProduct = () => {
   return (
     <div
       className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow
-    shadow-slate-300"
+    shadow-slate-300 container"
     >
       <form onSubmit={saveProduct} className="my-10">
         <div className="flex flex-col">
