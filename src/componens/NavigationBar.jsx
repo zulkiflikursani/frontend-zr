@@ -37,7 +37,7 @@ const NavigationBar = () => {
   );
   const refreshToken = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/token", {
+      const response = await axios.get(API_URL + "/token", {
         withCredentials: true,
       });
       setToken(response.data.accessToken);
@@ -52,7 +52,7 @@ const NavigationBar = () => {
 
   const Logout = async () => {
     try {
-      await axios.delete("http://localhost:5000/users/logout", {
+      await axios.delete(API_URL + "users/logout", {
         withCredentials: true,
       });
       goTo("/");
