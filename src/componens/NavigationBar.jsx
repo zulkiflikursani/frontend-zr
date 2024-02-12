@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
   const goTo = useNavigate();
   const [open, setOpen] = useState(false);
   const [token, setToken] = useState("");
@@ -19,7 +20,7 @@ const NavigationBar = () => {
     async (config) => {
       const currentDate = new Date();
       if (exp * 1000 < currentDate.getTime()) {
-        const response = await axiosJwt.get("http://localhost:5000/token", {
+        const response = await axiosJwt.get(API_URL + "token", {
           withCredentials: true,
         });
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
