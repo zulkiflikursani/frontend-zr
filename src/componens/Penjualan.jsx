@@ -2,8 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import useSWR from "swr";
-import ProductList from "./ProductList";
-// import DataTable from "react-data-table-component";
+
 let API = process.env.REACT_APP_API_URL;
 const Penjualan = () => {
   // const { mutate } = useSWRConfig();
