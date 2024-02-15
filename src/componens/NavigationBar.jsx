@@ -12,6 +12,20 @@ const NavigationBar = () => {
   const [name, setName] = useState("");
 
   useEffect(() => {
+    const refreshToken = async () => {
+      try {
+        const response = await axiosJwt.get(API_URL + "users", {
+          withCredentials: true,
+        });
+        setToken(response.data.accessToken);
+        const decoded = jwtDecode(response.data.accessToken);
+        setName(decoded.name);
+        setExp(decoded.exp);
+      } catch (error) {
+        console.log(error);
+        goTo("/");
+      }
+    };
     refreshToken();
   }, []);
 
@@ -35,20 +49,6 @@ const NavigationBar = () => {
       return Promise.reject(error);
     }
   );
-  const refreshToken = async () => {
-    try {
-      const response = await axios.get(API_URL + "token", {
-        withCredentials: true,
-      });
-      setToken(response.data.accessToken);
-      const decoded = jwtDecode(response.data.accessToken);
-      setName(decoded.name);
-      setExp(decoded.exp);
-    } catch (error) {
-      console.log(error);
-      goTo("/");
-    }
-  };
 
   const Logout = async () => {
     try {
