@@ -9,10 +9,12 @@ const NavigationBar = () => {
   const [open, setOpen] = useState(false);
   const [token, setToken] = useState("");
   const [exp, setExp] = useState("");
+  const [users, setUsers] = useState("");
   const [name, setName] = useState("");
 
   useEffect(() => {
     refreshToken();
+    getUser();
   }, []);
 
   const refreshToken = async () => {
@@ -31,12 +33,13 @@ const NavigationBar = () => {
       }
     }
   };
-  const axiosJwt = axios.create();
-  axiosJwt.interceptors.request.use(
+
+  const axiosJWT = axios.create();
+  axiosJWT.interceptors.request.use(
     async (config) => {
       const currentDate = new Date();
       if (exp * 1000 < currentDate.getTime()) {
-        const response = await axiosJwt.get(API_URL + "token", {
+        const response = await axios.get(API_URL + "token", {
           withCredentials: true,
         });
         config.headers.Authorization = `Bearer ${response.data.accessToken}`;
@@ -51,7 +54,15 @@ const NavigationBar = () => {
       return Promise.reject(error);
     }
   );
-
+  const getUser = async () => {
+    const response = await axiosJWT.get(API_URL + "users", {
+      headersL: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // setName(response.data.name);
+    console.log(response.data.name);
+  };
   const Logout = async () => {
     try {
       await axios.delete(API_URL + "users/logout", {
@@ -107,6 +118,7 @@ const NavigationBar = () => {
             ))}
           </div>
           <div>
+            {/* < onClick={getUser}>get Users</ > */}
             <button
               href="#"
               className=" mr-3 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
