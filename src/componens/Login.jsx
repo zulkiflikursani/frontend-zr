@@ -24,6 +24,7 @@ const Login = () => {
       });
       setToken(response.data.accessToken);
       const decoded = jwtDecode(response.data.accessToken);
+      console.log(response.data.accessToken);
       setName(decoded.name);
       setExp(decoded.exp);
       history("/dashboard");

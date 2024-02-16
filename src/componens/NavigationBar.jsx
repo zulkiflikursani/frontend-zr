@@ -60,7 +60,7 @@ const NavigationBar = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // setName(response.data.name);
+
     console.log(response.data.name);
   };
   const Logout = async () => {
@@ -118,7 +118,6 @@ const NavigationBar = () => {
             ))}
           </div>
           <div>
-            {/* < onClick={getUser}>get Users</ > */}
             <button
               href="#"
               className=" mr-3 inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
