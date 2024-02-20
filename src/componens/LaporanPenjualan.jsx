@@ -111,7 +111,9 @@ const LaporanPenjualan = () => {
               return (
                 <tr className="border">
                   <td className="border border-gray-200">{index + 1}</td>
-                  <td className="border border-gray-200">{item.tanggal}</td>
+                  <td className="border border-gray-200">
+                    {format(item.tanggal)}
+                  </td>
                   <td className="text-left">{item.kode_penjualan}</td>
                   <td className="border">{item.kode_barang}</td>
                   <td className="border">{item.nama_barang}</td>

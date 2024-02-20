@@ -12,6 +12,8 @@ const Login = () => {
   const [token, setToken] = useState("");
   const [name, setName] = useState("");
   const [exp, setExp] = useState("");
+  const [company, setCompany] = useState("");
+  const [level, setLevel] = useState("");
   const [errorLogin, setError] = useState("");
   const [cookiePermission, setCookiePermission] = useState(
     localStorage.getItem("cookiePermission")
@@ -51,6 +53,8 @@ const Login = () => {
       const decoded = jwtDecode(response.data.accessToken);
       setName(decoded.name);
       setExp(decoded.exp);
+      setCompany(decoded.company);
+      setLevel(decoded.level);
       history("/dashboard");
     } catch (error) {
       console.log(error);

@@ -9,23 +9,53 @@ const NavigationBar = () => {
   const [open, setOpen] = useState(false);
   const [token, setToken] = useState("");
   const [exp, setExp] = useState("");
-  const [users, setUsers] = useState("");
+
+  const [company, setCompany] = useState("");
+  const [level, setLevel] = useState("");
   const [name, setName] = useState("");
+  const [menu, setMenu] = useState([]);
 
   useEffect(() => {
     refreshToken();
-    getUser();
   }, []);
+  useEffect(() => {
+    filtermenu(level);
+  }, [level]);
 
+  const filtermenu = (levelParam) => {
+    if (levelParam === "1") {
+      const menutemp = [
+        { id: 1, title: "Data Barang", link: "/data-barang" },
+        { id: 2, title: "Penjualan", link: "/penjualan" },
+        { id: 3, title: "Pembelian", link: "/pembelian" },
+        { id: 4, title: "Daftar Penjualan", link: "/daftarpenjualan" },
+        { id: 5, title: "Daftar Pembelian", link: "/daftarpembelian" },
+        { id: 6, title: "Laporan", link: "/laporan" },
+        // {title:"Data Barang",link:"/data-barang"}
+      ];
+      setMenu(menutemp);
+    } else if (levelParam === "2") {
+      const menutemp = [
+        { id: 2, title: "Penjualan", link: "/penjualan" },
+        { id: 3, title: "Pembelian", link: "/pembelian" },
+        { id: 4, title: "Daftar Penjualan", link: "/daftarpenjualan" },
+        { id: 5, title: "Daftar Pembelian", link: "/daftarpembelian" },
+        // {title:"Data Barang",link:"/data-barang"}
+      ];
+      setMenu(menutemp);
+    }
+  };
   const refreshToken = async () => {
     try {
       const response = await axios.get(API_URL + "token", {
         withCredentials: true,
       });
       setToken(response.data.accessToken);
-      const decoded = jwtDecode(response.data.accessToken);
+      const decoded = await jwtDecode(response.data.accessToken);
       setName(decoded.name);
       setExp(decoded.exp);
+      setCompany(decoded.company);
+      setLevel(decoded.level);
     } catch (error) {
       console.log(error);
       if (error.response) {
@@ -47,6 +77,8 @@ const NavigationBar = () => {
         const decoded = jwtDecode(response.data.accessToken);
         setName(decoded.name);
         setExp(decoded.exp);
+        setCompany(decoded.company);
+        setLevel(decoded.level);
       }
       return config;
     },
@@ -54,14 +86,14 @@ const NavigationBar = () => {
       return Promise.reject(error);
     }
   );
-  const getUser = async () => {
-    const response = await axiosJWT.get(API_URL + "users", {
-      headersL: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response);
-  };
+  // const getUser = async () => {
+  //   const response = await axiosJWT.get(API_URL + "users", {
+  //     headersL: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   console.log(response);
+  // };
   const Logout = async () => {
     try {
       await axios.delete(API_URL + "users/logout", {
@@ -73,15 +105,6 @@ const NavigationBar = () => {
     }
   };
 
-  const menu = [
-    { id: 1, title: "Data Barang", link: "/data-barang" },
-    { id: 2, title: "Penjualan", link: "/penjualan" },
-    { id: 3, title: "Pembelian", link: "/pembelian" },
-    { id: 4, title: "Daftar Penjualan", link: "/daftarpenjualan" },
-    { id: 5, title: "Daftar Pembelian", link: "/daftarpembelian" },
-    { id: 6, title: "Laporan", link: "/laporan" },
-    // {title:"Data Barang",link:"/data-barang"}
-  ];
   return (
     <>
       <nav className="flex  items-center justify-between flex-wrap bg-red-500 p-6">
