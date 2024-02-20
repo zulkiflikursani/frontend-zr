@@ -60,8 +60,7 @@ const NavigationBar = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log(response.data.name);
+    console.log(response);
   };
   const Logout = async () => {
     try {

@@ -19,6 +19,7 @@ const Register = () => {
         password: password,
         confPassword: confPassword,
       });
+      alert("Berhasil Melakuakan Registrasi");
       history("/login");
     } catch (error) {
       if (error.response) console.log(error.response.data.msg);
@@ -56,8 +57,8 @@ const Register = () => {
           <input
             onChange={(e) => setName(e.target.value)}
             type="text"
-            name="user"
-            id="user"
+            name="name"
+            id="name"
             value={name}
             className="border-2 rounded-lg shadow-md p-2 w-full "
             placeholder="User Name"

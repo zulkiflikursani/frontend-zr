@@ -13,14 +13,18 @@ import Dahsboard from "./componens/Dashboard";
 import Login from "./componens/Login";
 import Register from "./componens/Register";
 import EditPenjualan from "./componens/EditPenjualan";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {}, []);
   return (
     <div className="">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/?error" element={<Login />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/dashboard"
             element={<Dahsboard children={<Penjualan />} />}
