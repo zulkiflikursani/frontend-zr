@@ -18,6 +18,7 @@ const NavigationBar = () => {
   useEffect(() => {
     refreshToken();
   }, []);
+
   useEffect(() => {
     filtermenu(level);
   }, [level]);
